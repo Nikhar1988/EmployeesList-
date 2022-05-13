@@ -1,8 +1,9 @@
-import { ReactElement } from 'react';
-import { TextSpan } from 'typescript';
+
+import React from 'react';
+
 import { DataType } from '../App/App';
-import EmployeesListItem, { EmployeesListItemProps } from '../EmployeesListItem/EmployeesListItem';
-import './EmployeesList.scss'
+import EmployeesListItem from '../EmployeesListItem/EmployeesListItem';
+import './EmployeesList.scss';
 
 
 
@@ -11,23 +12,25 @@ import './EmployeesList.scss'
 type EmployeesListType = {
     employees: DataType[],
     onDelete: (id: number) => void,
-    onToggleIncrease: (id:number) => void
+    onToggleProps: (id:number, prop:string) => void,
+    
 }
 
-const EmployeesList:React.FC<EmployeesListType> = ({employees, onDelete, onToggleIncrease }):JSX.Element => {
-    return (
-        <ul className="app-list list-group">
-            {employees.map(({id, ...emp}) => (
-                <EmployeesListItem 
-                {...emp} 
-                key={id} 
-                onDelete = {() => onDelete(id)}
-                onToggleIncrease = {() => onToggleIncrease(id)}
-                />
+const EmployeesList:React.FC<EmployeesListType> = ({employees, onDelete, onToggleProps }):JSX.Element => {
+  return (
+    <ul className="app-list list-group">
+      {employees.map(({id, ...emp}) => (
+        <EmployeesListItem 
+          {...emp} 
+          key={id} 
+          onDelete = {() => onDelete(id)}
+          onToggleProps = {(e) => onToggleProps(id, e.currentTarget.getAttribute('data-toggle') as string)}
+                 
+        />
                 
-            ))}             
-        </ul>
-    )
-}
+      ))}             
+    </ul>
+  );
+};
 
 export default EmployeesList;

@@ -1,67 +1,56 @@
-import { Component, ReactElement } from 'react'
-import './EmployeesListItem.scss';
+import React, { Component } from 'react';
 
-type EmployeesListItemState = {
-    increase: boolean,
-    like: boolean
-}
+import './EmployeesListItem.scss';
 
 export type EmployeesListItemProps = {
     name: string,
     salary: string,
     onDelete: ()=> void,
-    onToggleIncrease: () => void,
-    increase: boolean
+    onToggleProps: ( e:React.SyntheticEvent) => void,
+    increase: boolean,
+    rise: boolean   
 };
 
 
 
-class EmployeesListItem extends Component<EmployeesListItemProps,EmployeesListItemState> {
-    state = {
-        increase: false,
-        like: false
-    }
-
-    onLike = () => {
-        this.setState((state) => ({
-            like: !state.like 
-        }))
-    }
-
+class EmployeesListItem extends Component<EmployeesListItemProps,{}> {
+   
+  render() {
+    const {name, salary, onDelete, onToggleProps, increase,  rise} = this.props;
     
-    render() {
-    const {name, salary, onDelete, onToggleIncrease, increase} = this.props;
-    const { like} = this.state;
     let classNames ='list-group-item d-flex justify-content-between';
-    if(increase) {classNames += ' increase'};    
-    if(like) {classNames += ' like'}; 
-        return (
-            <li className={classNames}>
-                <span 
-                    className="list-group-item-label"
-                    onClick={this.onLike}
-                >{name}</span>
-                <input type="text" className="list-group-item-input" defaultValue={`${salary}$`}/>
-                <div className='d-flex justify-content-center align-items-center'>
-                    <button 
-                        type="button"
-                        className="btn-cookie btn-sm" 
-                        onClick={onToggleIncrease}
-                    >
-                        <i className="fas fa-cookie"></i>
-                    </button>
+    if(increase) {classNames += ' increase';};    
+    if(rise) {classNames += ' like';}; 
+        
+    return (
+      <li className={classNames}>
+        <span 
+          className="list-group-item-label"
+          onClick={onToggleProps}
+          data-toggle="rise"
+        >{name}</span>
+        <input type="text" className="list-group-item-input" defaultValue={`${salary}$`}/>
+        <div className="d-flex justify-content-center align-items-center">
+          <button 
+            type="button"
+            className="btn-cookie btn-sm" 
+            data-toggle="increase"
+            onClick={onToggleProps}
+          >
+            <i className="fas fa-cookie"></i>
+          </button>
 
-                    <button type="button"
-                            className="btn-trash btn-sm "
-                            onClick={onDelete}
-                    >
-                        <i className="fas fa-trash"></i>
-                    </button>
-                    <i className="fas fa-star"></i>
-                </div>
-            </li>
-        )
-    }
+          <button type="button"
+            className="btn-trash btn-sm "
+            onClick={onDelete}
+          >
+            <i className="fas fa-trash"></i>
+          </button>
+          <i className="fas fa-star"></i>
+        </div>
+      </li>
+    );
+  }
     
 }
 
