@@ -1,5 +1,5 @@
 
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 import { TypeFiterType } from '../App/App';
  
@@ -31,6 +31,7 @@ const AppFilter:FC<AppFilterProps> = (props) => {
       <button type="button"
         className={`btn ${clazz}`}
         key={name}
+        data-atr={name}
         onClick={() => onFilterEmployees(name)}>
         {label}
       </button>

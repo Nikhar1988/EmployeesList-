@@ -1,4 +1,6 @@
-import  { Component } from 'react';
+import  React, { Component } from 'react';
+
+import { generateId } from '../../helpers/helpers';
 
 import AppFilter from '../AppFilter/AppFilter';
 import AppInfo from '../AppInfo/AppInfo';
@@ -16,11 +18,13 @@ export type DataType ={
         id:number,
         increase: boolean,
         rise: boolean,
+        
 }
 type StateType = {
     data: DataType[],
     filter: TypeFiterType,
     term: string,
+     
      
 }
 
@@ -35,10 +39,11 @@ class App extends Component<{},StateType> {
       ], 
       filter: 'all',
       term:'', 
+       
     }; 
       
   }
-  maxId = 4;
+
 
   deleteItem = (id:number) => {
     this.setState(({data})=> ({
@@ -46,9 +51,9 @@ class App extends Component<{},StateType> {
     })); 
   };
 
-  onAddEmployee = (name:string, salary: string) => {
+  onAddEmployee = (name:string, salary: string) => { 
     this.setState(({data})=> ({
-      data: [...data, { name, salary, increase: false, rise: false, id:this.maxId++}],  
+      data: [...data, { name, salary, increase: false, rise: false, id:generateId()}],  
     }));     
   };
   onToggleProps = (id:number, prop: string ) => {
@@ -90,12 +95,26 @@ class App extends Component<{},StateType> {
       return items;
     }
   };
+
+   
+
+  onChangeSalary = (id: number, value: string ) => {
+    this.setState(({data})=> ({
+      data: data.map(item => {
+        if(item.id === id) {
+          return {...item, salary: value};
+        }
+        return item;
+      }),
+    }));
+  };
  
   render() {
     const {data,  term, filter} = this.state;
     const countEmployees = data.length;
     const countIncreaseEmployees = data.filter(item => item.increase).length;
     const  visibleData = this.filterEmp(this.searchEmp(data, term), filter);
+     
 
     return (
       <div className="app">
@@ -117,7 +136,8 @@ class App extends Component<{},StateType> {
         <EmployeesList 
           employees={visibleData}   
           onDelete={this.deleteItem}
-          onToggleProps = {this.onToggleProps}               
+          onToggleProps = {this.onToggleProps} 
+          onChangeSalary = {this.onChangeSalary}         
         />
         <EmployeesAddForm onAddEmployee = {this.onAddEmployee}/>
       </div>
